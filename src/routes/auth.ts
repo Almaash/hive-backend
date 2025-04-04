@@ -3,6 +3,8 @@ import { getUser, getUserById, login, profile, signup, updateProfile, updateUser
 import { authMiddleware } from '../middlewares/auth'
 import { upload } from '../../config/multer.config'
 import { createPost, deletePost, getAllPost, getPostByUserId, updatePost } from '../controllers/posts'
+import { conversationController, getConversationsByUserId } from '../controllers/conversation'
+import { getMessage, getMessageByConvoId, messageController, user } from '../controllers/message'
 
 const authRoutes = Router()
 
@@ -19,6 +21,14 @@ authRoutes.get('/getAllPost',getAllPost)
 authRoutes.get('/getPostByUserId/:id',getPostByUserId)
 authRoutes.delete('/deletePost/:id',deletePost)
 authRoutes.put('/updatePost/:id',upload.single('post_img'),updatePost)
+
+authRoutes.post('/newConversation',conversationController)
+authRoutes.get('/getConversation/:userId',getConversationsByUserId)
+
+authRoutes.post('/newMessages',messageController)
+authRoutes.get('/getallMessages',getMessage)
+authRoutes.get('/getallMessages/:id',getMessageByConvoId)
+authRoutes.get('/user',user)
 
 
 export default authRoutes

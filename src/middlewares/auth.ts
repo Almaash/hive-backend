@@ -16,9 +16,6 @@ export const authMiddleware = async (req: any, res: Response, next:NextFunction)
 
     const token = tempToken.split(" ")[1]
 
-    console.log(token)
-
-    // if token is not present throw an error unauthorized
     if (!token) {
         res.status(401).json({
             error: true,
@@ -27,10 +24,8 @@ export const authMiddleware = async (req: any, res: Response, next:NextFunction)
     }
 
     try {
-        // if token is present extract from payload and verift that token
         const payload = jwt.verify(token, JWT_SECRET) as any
 
-        // to get the user from the payload
         const user = await Prisma.user.findFirst({ where: { id: payload.userId } })
         if (!user) {
             res.status(401).json({
@@ -40,7 +35,7 @@ export const authMiddleware = async (req: any, res: Response, next:NextFunction)
         }
         req.user = user as User
         next()
-        // attached the user fromo the current payload.
+        
     } catch (error) {
         res.status(401).json({
             error: true,
